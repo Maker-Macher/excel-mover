@@ -2,8 +2,6 @@
 Author: Viktor Engelowski
 Description: Read cells and rows from one Spreadsheet to insert the data into another
 """
-import logging
-
 import pandas as pd
 import openpyxl as op
 import names  # Lokale Datei mit Mitarbeiter Namen und deren "Kurzform"
