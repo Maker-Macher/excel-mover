@@ -2,6 +2,8 @@
 Author: Viktor Engelowski
 Description: Read cells and rows from one Spreadsheet to insert the data into another
 """
+import datetime
+
 import pandas as pd
 import openpyxl as op
 import names  # Lokale Datei mit Mitarbeiter Namen und deren "Kurzform"
@@ -111,12 +113,20 @@ def create_table(_sheet: pd.DataFrame, _name_dict: dict) -> dict:
 def assign_dates(_sheet: pd.DataFrame) -> dict:
     # Jedes Datum bekommt eine y-Koordinate zugewiesen
     _dict = {}
-    # TODO: Automatisch dir range erkennen
-    for i in range(20, 276):  # Range der Daten in der Zieltabelle
+
+    _null_c = 0
+    for i in range(20, _sheet.shape[0]):  # Range der Daten in der Zieltabelle
+        if _null_c >= 2:  # Wenn 2 oder mehr leere Felder hintereinander kommen, nicht nach mehr Daten checken
+            break
+
         _val = _sheet[0][i]
 
         if not pd.isnull(_val):
             _dict[_val] = i  # Wenn die Zelle nicht leer ist, in ein dict stecken
+            _null_c = 0  # Falls Datum gefunden, Variable zurücksetzen
+            continue
+
+        _null_c += 1
 
     return _dict
 
